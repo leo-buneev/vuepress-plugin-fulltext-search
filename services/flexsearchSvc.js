@@ -46,8 +46,6 @@ export default {
       ...getAdditionalInfo(page, queryString, queryTerms),
     }))
 
-    console.log(result)
-
     const resultByParent = _.groupBy(result, 'parentPageTitle')
     return _.values(resultByParent)
       .map(arr =>

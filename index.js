@@ -17,7 +17,6 @@ module.exports = options => ({
         h.charIndex = plaintext.indexOf(h.title)
       }
       $page.headersStr = $page.headers ? $page.headers.map(h => h.title).join(' ') : null
-      console.log($page.headers)
       $page.content = plaintext
       $page.contentLowercase = plaintext.toLowerCase()
     } catch (e) {
