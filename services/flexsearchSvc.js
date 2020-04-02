@@ -62,7 +62,9 @@ function getParentPageTitle(page) {
   const pathParts = page.path.split('/')
   let parentPagePath = '/'
   if (pathParts[1]) parentPagePath = `/${pathParts[1]}/`
-  return pagesByPath[parentPagePath].title
+
+  const parentPage = pagesByPath[parentPagePath] || page
+  return parentPage.title
 }
 
 function getAdditionalInfo(page, queryString, queryTerms) {

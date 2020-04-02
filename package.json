@@ -1,6 +1,6 @@
 {
   "name": "vuepress-plugin-fulltext-search",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Adds full-text search capabilities to your vuepress site with a help of flexsearch library.",
   "main": "index.js",
   "repository": "https://github.com/leo-buneev/vuepress-plugin-fulltext-search.git",
