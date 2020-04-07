@@ -87,7 +87,7 @@ function getAdditionalInfo(page, queryString, queryTerms) {
   }
 
   // content match
-  let headerIndex = _.findLastIndex(page.headers || [], h => h.charIndex < match.charIndex)
+  let headerIndex = _.findLastIndex(page.headers || [], h => h.charIndex != null && h.charIndex < match.charIndex)
   if (headerIndex === -1) headerIndex = null
 
   return {
