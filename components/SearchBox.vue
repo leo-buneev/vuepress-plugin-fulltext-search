@@ -56,11 +56,12 @@ export default {
   computed: {
     queryTerms() {
       if (!this.query) return []
-      return this.query
+      const result = this.query
         .trim()
         .toLowerCase()
-        .split(/[^\w]+/i)
+        .split(/[^\p{L}]+/iu)
         .filter(t => t)
+      return result
     },
     showSuggestions() {
       return this.focused && this.suggestions && this.suggestions.length

@@ -1,12 +1,16 @@
 import Flexsearch from 'flexsearch'
+import cyrillicCharset from 'flexsearch/dist/lang/cyrillic/default.min.js'
+import cjkCharset from 'flexsearch/dist/lang/cjk/default.min.js'
 import _ from 'lodash'
 
 let index = null
+let cyrillicIndex = null
+let cjkIndex = null
 let pagesByPath = null
 
 export default {
   buildIndex(pages) {
-    index = new Flexsearch({
+    const indexSettings = {
       tokenize: 'forward',
       async: true,
       doc: {
@@ -16,12 +20,31 @@ export default {
         // of course I stripped the content before so I use the plain text content not the markdown text
         field: ['title', 'headersStr', 'content'],
       },
-    })
+    }
+    index = new Flexsearch(indexSettings)
     index.add(pages)
+
+    const cyrillicPages = pages.filter(p => p.charsets.cyrillic)
+    const cjkPages = pages.filter(p => p.charsets.cjk)
+
+    if (cyrillicPages.length) {
+      cyrillicIndex = new Flexsearch({
+        ...indexSettings,
+        charset: cyrillicCharset,
+      })
+      cyrillicIndex.push(cyrillicPages)
+    }
+    if (cjkPages.length) {
+      cjkIndex = new Flexsearch({
+        ...indexSettings,
+        charset: cjkCharset,
+      })
+      cjkIndex.push(cjkPages)
+    }
     pagesByPath = _.keyBy(pages, 'path')
   },
   async match(queryString, queryTerms, limit = 7) {
-    const searchResult = await index.search([
+    const searchParams = [
       {
         field: 'title',
         query: queryString,
@@ -39,7 +62,11 @@ export default {
         query: queryString,
         limit,
       },
-    ])
+    ]
+    const searchResult1 = await index.search(searchParams)
+    const searchResult2 = cyrillicIndex ? await cyrillicIndex.search(searchParams) : []
+    const searchResult3 = cjkIndex ? await cjkIndex.search(searchParams) : []
+    const searchResult = [...searchResult1, ...searchResult2, ...searchResult3]
     const result = searchResult.map(page => ({
       ...page,
       parentPageTitle: getParentPageTitle(page),
