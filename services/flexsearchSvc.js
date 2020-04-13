@@ -1,6 +1,7 @@
 import Flexsearch from 'flexsearch'
-import cyrillicCharset from 'flexsearch/dist/lang/cyrillic/default.min.js'
-import cjkCharset from 'flexsearch/dist/lang/cjk/default.min.js'
+// Use when flexSearch v0.7.0 will be available
+// import cyrillicCharset from 'flexsearch/dist/lang/cyrillic/default.min.js'
+// import cjkCharset from 'flexsearch/dist/lang/cjk/default.min.js'
 import _ from 'lodash'
 
 let index = null
@@ -30,14 +31,14 @@ export default {
     if (cyrillicPages.length) {
       cyrillicIndex = new Flexsearch({
         ...indexSettings,
-        charset: cyrillicCharset,
+        // charset: cyrillicCharset,
       })
       cyrillicIndex.push(cyrillicPages)
     }
     if (cjkPages.length) {
       cjkIndex = new Flexsearch({
         ...indexSettings,
-        charset: cjkCharset,
+        // charset: cjkCharset,
       })
       cjkIndex.push(cjkPages)
     }
