@@ -9,6 +9,8 @@ let cyrillicIndex = null
 let cjkIndex = null
 let pagesByPath = null
 
+const cjkRegex = /[\u4E00-\u9FCC\u3400-\u4DB5\uFA0E\uFA0F\uFA11\uFA13\uFA14\uFA1F\uFA21\uFA23\uFA24\uFA27-\uFA29]|[\ud840-\ud868][\udc00-\udfff]|\ud869[\udc00-\uded6\udf00-\udfff]|[\ud86a-\ud86c][\udc00-\udfff]|\ud86d[\udc00-\udf34\udf40-\udfff]|\ud86e[\udc00-\udc1d]/giu
+
 export default {
   buildIndex(pages) {
     const indexSettings = {
@@ -31,16 +33,29 @@ export default {
     if (cyrillicPages.length) {
       cyrillicIndex = new Flexsearch({
         ...indexSettings,
-        // charset: cyrillicCharset,
+        encode: false,
+        split: /\s+/,
+        tokenize: 'forward',
       })
-      cyrillicIndex.push(cyrillicPages)
+      cyrillicIndex.add(cyrillicPages)
     }
     if (cjkPages.length) {
       cjkIndex = new Flexsearch({
         ...indexSettings,
-        // charset: cjkCharset,
+        encode: false,
+        tokenize: function(str) {
+          const cjkWords = []
+          let m = null
+          do {
+            m = cjkRegex.exec(str)
+            if (m) {
+              cjkWords.push(m[0])
+            }
+          } while (m)
+          return cjkWords
+        },
       })
-      cjkIndex.push(cjkPages)
+      cjkIndex.add(cjkPages)
     }
     pagesByPath = _.keyBy(pages, 'path')
   },
@@ -67,7 +82,7 @@ export default {
     const searchResult1 = await index.search(searchParams)
     const searchResult2 = cyrillicIndex ? await cyrillicIndex.search(searchParams) : []
     const searchResult3 = cjkIndex ? await cjkIndex.search(searchParams) : []
-    const searchResult = [...searchResult1, ...searchResult2, ...searchResult3]
+    const searchResult = _.uniqBy([...searchResult1, ...searchResult2, ...searchResult3], 'path')
     const result = searchResult.map(page => ({
       ...page,
       parentPageTitle: getParentPageTitle(page),
