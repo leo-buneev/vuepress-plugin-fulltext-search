@@ -153,9 +153,13 @@ export default {
       if (!this.showSuggestions) {
         return
       }
-      this.$router.push(this.suggestions[i].path + this.suggestions[i].slug)
-      this.query = ''
-      this.focusIndex = 0
+      if (this.suggestions[i].external) {
+        window.open(this.suggestions[i].path + this.suggestions[i].slug, '_blank')
+      } else {
+        this.$router.push(this.suggestions[i].path + this.suggestions[i].slug)
+        this.query = ''
+        this.focusIndex = 0
+      }
     },
     focus(i) {
       this.focusIndex = i
