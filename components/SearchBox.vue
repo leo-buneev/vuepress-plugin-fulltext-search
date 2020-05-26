@@ -41,6 +41,10 @@
 
 <script>
 import flexsearchSvc from '../services/flexsearchSvc'
+
+// see https://vuepress.vuejs.org/plugin/option-api.html#clientdynamicmodules
+import proccessSuggestions from '@dynamic/processSuggestions'
+
 /* global SEARCH_MAX_SUGGESTIONS, SEARCH_PATHS, SEARCH_HOTKEYS */
 export default {
   name: 'SearchBox',
@@ -98,11 +102,18 @@ export default {
         this.suggestions = []
         return
       }
-      this.suggestions = await flexsearchSvc.match(
+      const suggestions = await flexsearchSvc.match(
         this.query,
         this.queryTerms,
         this.$site.themeConfig.searchMaxSuggestions || SEARCH_MAX_SUGGESTIONS,
       )
+
+      // augment suggestions with user-provided function
+      if (proccessSuggestions) {
+        this.suggestions = await proccessSuggestions(suggestions, this.query, this.queryTerms);
+      } else {
+        this.suggestions = suggestions;
+      }
     },
     getPageLocalePath(page) {
       for (const localePath in this.$site.locales || {}) {

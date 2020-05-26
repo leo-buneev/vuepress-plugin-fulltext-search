@@ -28,3 +28,29 @@ And that is it! Just compile your app and see for yourself.
 
 Webpack alias `@SearchBox` will be replaced with plugin's implementation, so it should work automatically with any
 VuePress theme.
+
+### Processing Suggestions
+
+You can provide a function in plain-text format to augment suggestions with your own items:
+
+```js
+module.exports = {
+  plugins: [
+    ['fulltext-search', {
+      processSuggestions: `export default async function(suggestions, queryString, queryTerms) {
+        if (queryString) {
+          suggestions.push({
+            path: 'https://sourcegraph.com/search?patternType=literal&q=',
+            slug: queryString,
+            parentPageTitle: 'Sourcegraph',
+            title: 'Search code',
+            contentStr: 'Search for "' + queryString + '" on Sourcegraph',
+            external: true,
+          });
+        }
+        return suggestions;
+      }`,
+    }],
+  ]
+}
+```
