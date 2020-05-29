@@ -54,3 +54,18 @@ module.exports = {
   ]
 }
 ```
+
+For more complex functions, you can write it in a separate Javascript file and import it like so:
+
+```js
+const fs = require('fs');
+const { path } = require('@vuepress/shared-utils');
+
+module.exports = {
+  plugins: [
+    ['fulltext-search', {
+      processSuggestions: fs.readFileSync(path.resolve(__dirname, 'processSuggestions.js')),
+    }],
+  ]
+}
+```
