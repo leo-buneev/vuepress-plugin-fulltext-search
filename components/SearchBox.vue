@@ -43,7 +43,7 @@
 import flexsearchSvc from '../services/flexsearchSvc'
 
 // see https://vuepress.vuejs.org/plugin/option-api.html#clientdynamicmodules
-import proccessSuggestions from '@dynamic/processSuggestions'
+import * as functions from '@dynamic/functions'
 
 /* global SEARCH_MAX_SUGGESTIONS, SEARCH_PATHS, SEARCH_HOTKEYS */
 export default {
@@ -109,8 +109,8 @@ export default {
       )
 
       // augment suggestions with user-provided function
-      if (proccessSuggestions) {
-        this.suggestions = await proccessSuggestions(suggestions, this.query, this.queryTerms);
+      if (functions && functions.processSuggestions) {
+        this.suggestions = await functions.processSuggestions(suggestions, this.query, this.queryTerms);
       } else {
         this.suggestions = suggestions;
       }
@@ -163,6 +163,9 @@ export default {
     go(i) {
       if (!this.showSuggestions) {
         return
+      }
+      if (functions && functions.onGoToSuggestion) {
+        functions.onGoToSuggestion(i, this.suggestions[i], this.query, this.queryTerms)
       }
       if (this.suggestions[i].external) {
         window.open(this.suggestions[i].path + this.suggestions[i].slug, '_blank')

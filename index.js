@@ -32,8 +32,8 @@ module.exports = options => ({
   },
   clientDynamicModules() {
     return {
-      name: 'processSuggestions.js',
-      content: options.processSuggestions || 'export default null',
+      name: 'functions.js',
+      content: options.functions || 'export default null',
     }
   }
 })
