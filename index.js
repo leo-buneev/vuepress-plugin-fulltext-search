@@ -4,7 +4,7 @@ const htmlToText = require('html-to-text')
 module.exports = options => ({
   extendPageData($page) {
     try {
-      const { html } = $page._context.markdown.render($page._strippedContent)
+      const { html } = $page._context.markdown.render($page._content)
 
       const plaintext = htmlToText.fromString(html, {
         wordwrap: null,
