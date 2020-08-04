@@ -10,7 +10,9 @@ module.exports = options => ({
         wordwrap: null,
         hideLinkHrefIfSameAsText: true,
         ignoreImage: true,
+        ignoreHref: true,
         uppercaseHeadings: false,
+        tables: true,
       })
 
       for (const h of $page.headers || []) {
