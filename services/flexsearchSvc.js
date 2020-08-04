@@ -33,7 +33,7 @@ export default {
     if (cyrillicPages.length) {
       cyrillicIndex = new Flexsearch({
         ...indexSettings,
-        encode: false,
+        encode: 'icase',
         split: /\s+/,
         tokenize: 'forward',
       })
