@@ -88,3 +88,15 @@ The `query` URL search parameter can be provided to automatically populate and f
 ```none
 https://your-website.com?query=hello+world
 ```
+
+### Excluding pages from search
+
+You can exclude pages from search suggestions by adding `search: false` to a page's fontmatter:
+
+```none
+---
+search: false
+---
+
+<!-- page content -->
+```
