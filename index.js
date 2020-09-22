@@ -4,13 +4,15 @@ const htmlToText = require('html-to-text')
 module.exports = options => ({
   extendPageData($page) {
     try {
-      const { html } = $page._context.markdown.render($page._strippedContent)
+      const { html } = $page._context.markdown.render($page._strippedContent || '')
 
       const plaintext = htmlToText.fromString(html, {
         wordwrap: null,
         hideLinkHrefIfSameAsText: true,
         ignoreImage: true,
+        ignoreHref: true,
         uppercaseHeadings: false,
+        tables: true,
       })
 
       for (const h of $page.headers || []) {

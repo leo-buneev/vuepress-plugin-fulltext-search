@@ -63,7 +63,7 @@ export default {
       const result = this.query
         .trim()
         .toLowerCase()
-        .split(/[^\p{L}]+/iu)
+        .split(/[^\p{L}\p{N}_]+/iu)
         .filter(t => t)
       return result
     },
