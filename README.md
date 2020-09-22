@@ -48,6 +48,7 @@ async function onGoToSuggestion(index: number, suggestion: Suggestion, queryStri
 Functions are provided to the plugin like so:
 
 ```js
+// docs/.vuepress/config.js
 const fs = require('fs');
 const { path } = require('@vuepress/shared-utils');
 
@@ -64,6 +65,7 @@ module.exports = {
 For example, in `fulltextSearchFunctions.js`, you might have:
 
 ```js
+// docs/.vuepress/fulltextSearchFunctions.js
 export async function processSuggestions(suggestions, queryString, queryTerms) {
   if (queryString) {
     // add a suggestion to start a search in an external service
