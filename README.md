@@ -80,3 +80,11 @@ export async function onGoToSuggestion() {
   // some analytics stuff
 }
 ```
+
+### Search parameters
+
+The `query` URL search parameter can be provided to automatically populate and focus the search box. This is useful for adding your VuePress website as a custom search engine in browsers. For example:
+
+```none
+https://your-website.com?query=hello+world
+```
