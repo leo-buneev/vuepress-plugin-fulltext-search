@@ -120,9 +120,9 @@ export default {
 
       // augment suggestions with user-provided function
       if (functions && functions.processSuggestions) {
-        this.suggestions = await functions.processSuggestions(suggestions, this.query, this.queryTerms);
+        this.suggestions = await functions.processSuggestions(suggestions, this.query, this.queryTerms)
       } else {
-        this.suggestions = suggestions;
+        this.suggestions = suggestions
       }
     },
     getPageLocalePath(page) {
@@ -191,7 +191,7 @@ export default {
           params.delete('query')
           const paramsString = params.toString()
           const newState = window.location.pathname + (paramsString ? `?${paramsString}` : '')
-          history.pushState(null, '', newState);
+          history.pushState(null, '', newState)
         }
       }
     },
