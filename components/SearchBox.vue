@@ -87,6 +87,16 @@ export default {
     flexsearchSvc.buildIndex(this.$site.pages)
     this.placeholder = this.$site.themeConfig.searchPlaceholder || ''
     document.addEventListener('keydown', this.onHotkey)
+
+    // set query from URL
+    const params = this.urlParams()
+    if (params) {
+      const query = params.get('query')
+      if (query) {
+        this.query = decodeURI(query)
+        this.focused = true
+      }
+    }
   },
   beforeDestroy() {
     document.removeEventListener('keydown', this.onHotkey)
@@ -173,6 +183,16 @@ export default {
         this.$router.push(this.suggestions[i].path + this.suggestions[i].slug)
         this.query = ''
         this.focusIndex = 0
+        this.focused = false
+
+        // reset query param
+        const params = this.urlParams()
+        if (params) {
+          params.delete('query')
+          const paramsString = params.toString()
+          const newState = window.location.pathname + (paramsString ? `?${paramsString}` : '')
+          history.pushState(null, '', newState);
+        }
       }
     },
     focus(i) {
@@ -181,6 +201,12 @@ export default {
     unfocus() {
       this.focusIndex = -1
     },
+    urlParams() {
+      if (!window.location.search) {
+        return null
+      }
+      return new URLSearchParams(window.location.search)
+    }
   },
 }
 </script>
