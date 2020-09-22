@@ -31,20 +31,21 @@ VuePress theme.
 
 ### Functions
 
-You can define the following functions:
+You can define functions to hook into various seach features. The functions that can be implemented are as follows:
 
 ```ts
 /**
  * Augment, adjust, or manipulate the suggestions shown to users.
  */
 async function processSuggestions(suggestions: Suggestion[], queryString: string, queryTerms: string[]): Suggestion[]
+
 /**
  * Callback function to call when a user clicks on a suggestion.
  */
 async function onGoToSuggestion(index: number, suggestion: Suggestion, queryString: string, queryTerms: string[])
 ```
 
-You can provide it like so:
+Functions are provided to the plugin like so:
 
 ```js
 const fs = require('fs');
@@ -53,17 +54,19 @@ const { path } = require('@vuepress/shared-utils');
 module.exports = {
   plugins: [
     ['fulltext-search', {
+      // provide the contents of a JavaScript file
       functions: fs.readFileSync(path.resolve(__dirname, 'fulltextSearchFunctions.js')),
     }],
   ]
 }
 ```
 
-For example, in `fulltextSearchFunctions.js`:
+For example, in `fulltextSearchFunctions.js`, you might have:
 
 ```js
 export async function processSuggestions(suggestions, queryString, queryTerms) {
   if (queryString) {
+    // add a suggestion to start a search in an external service
     suggestions.push({
       path: 'https://sourcegraph.com/search?patternType=literal&q=',
       slug: queryString,
@@ -77,7 +80,7 @@ export async function processSuggestions(suggestions, queryString, queryTerms) {
 }
 
 export async function onGoToSuggestion() {
-  // some analytics stuff
+  // create an analytics event
 }
 ```
 
