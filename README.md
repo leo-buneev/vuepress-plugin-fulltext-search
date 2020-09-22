@@ -1,6 +1,6 @@
 # vuepress-plugin-fulltext-search
 
-Adds full-text search capabilities to your vuepress site with a help of flexsearch library.
+Add full-text search capabilities to your [VuePress](https://vuepress.vuejs.org/) website using the [Flexsearch](https://github.com/nextapps-de/flexsearch) library.
 
 Many thanks to [Ahmad Mostafa](https://ahmadmostafa.com/2019/12/09/build-better-search-in-vuepress-site/) for the idea.
 
