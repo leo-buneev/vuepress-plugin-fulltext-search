@@ -170,6 +170,8 @@ function getMatch(page, query, terms) {
 }
 
 function getHeaderMatch(page, term) {
+  // if (page.slug && page.slug.includes('versioning'))
+  console.log(page)
   if (!page.headers) return null
   for (let i = 0; i < page.headers.length; i++) {
     const h = page.headers[i]

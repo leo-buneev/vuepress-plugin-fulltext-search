@@ -1,10 +1,14 @@
 const { path } = require('@vuepress/shared-utils')
 const htmlToText = require('html-to-text')
+const _ = require('lodash')
 
-module.exports = options => ({
+let customTitles = null
+
+module.exports = (options, ctx, globalCtx) => ({
   extendPageData($page) {
     try {
       const { html } = $page._context.markdown.render($page._strippedContent || '')
+      if (!customTitles) customTitles = getCustomTitles(globalCtx)
 
       const plaintext = htmlToText.fromString(html, {
         wordwrap: null,
@@ -24,6 +28,9 @@ module.exports = options => ({
       $page.content = plaintext
       $page.contentLowercase = plaintext.toLowerCase()
       $page.charsets = getCharsets(plaintext)
+
+      // Take title from sidebar if it's missing on the page itself
+      if (!$page.title) $page.title = customTitles[normalizePath($page.path)]
     } catch (e) {
       // incorrect markdown
       console.error('Error when applying fulltext-search plugin:', e)
@@ -39,6 +46,60 @@ module.exports = options => ({
     }
   },
 })
+
+function getCustomTitles(globalCtx) {
+  try {
+    const sidebarConfig = _.get(globalCtx, '_pluginContext.themeConfig.sidebar')
+    if (!sidebarConfig) return {}
+
+    let sidebars = [sidebarConfig]
+    if (_.isPlainObject(sidebarConfig)) sidebars = _.values(sidebarConfig)
+
+    sidebars = sidebars.filter(sb => _.isArray(sb))
+
+    const result = {}
+    for (const sb of sidebars) {
+      for (const page of sb) {
+        if (_.isArray(page)) {
+          const [pathWithExtension, title] = page
+          const normalizedPath = normalizePath(pathWithExtension)
+          if (normalizedPath && title) result[normalizedPath] = title
+          continue
+        }
+        if (!_.isObjectLike(page)) continue
+
+        if (page.path && page.title) {
+          const normalizedPath = normalizePath(page.path)
+          if (normalizedPath) result[normalizedPath] = page.title
+        }
+        if (page.children) {
+          for (const c of page.children) {
+            if (_.isArray(c)) {
+              const [pathWithExtension, title] = c
+              const normalizedPath = normalizePath(pathWithExtension)
+              if (normalizedPath && title) result[normalizedPath] = title
+            }
+          }
+        }
+      }
+    }
+    return result
+  } catch (e) {
+    console.log('[fulltext-search] Error while getting sidebar paths:', e)
+    return {}
+  }
+}
+
+function normalizePath(rawPath) {
+  if (!rawPath) return null
+  try {
+    const parsedPath = path.parse(rawPath)
+    return path.join(parsedPath.dir, parsedPath.name)
+  } catch (e) {
+    console.log(`[fulltext-search] Error while normalizing path ${rawPath}:`, e)
+    return null
+  }
+}
 
 function getCharsets(text) {
   const cyrillicRegex = /[\u0400-\u04FF]/iu
