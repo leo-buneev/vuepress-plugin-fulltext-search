@@ -15,6 +15,7 @@ export default {
   buildIndex(allPages) {
     const pages = allPages.filter(p => !p.frontmatter || p.frontmatter.search !== false)
     const indexSettings = {
+      encode: 'simple',
       tokenize: 'forward',
       async: true,
       doc: {
