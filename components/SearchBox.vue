@@ -41,6 +41,10 @@
 
 <script>
 import flexsearchSvc from '../services/flexsearchSvc'
+
+// see https://vuepress.vuejs.org/plugin/option-api.html#clientdynamicmodules
+import * as functions from '@dynamic/functions'
+
 /* global SEARCH_MAX_SUGGESTIONS, SEARCH_PATHS, SEARCH_HOTKEYS */
 export default {
   name: 'SearchBox',
@@ -83,6 +87,16 @@ export default {
     flexsearchSvc.buildIndex(this.$site.pages)
     this.placeholder = this.$site.themeConfig.searchPlaceholder || ''
     document.addEventListener('keydown', this.onHotkey)
+
+    // set query from URL
+    const params = this.urlParams()
+    if (params) {
+      const query = params.get('query')
+      if (query) {
+        this.query = decodeURI(query)
+        this.focused = true
+      }
+    }
   },
   beforeDestroy() {
     document.removeEventListener('keydown', this.onHotkey)
@@ -98,11 +112,18 @@ export default {
         this.suggestions = []
         return
       }
-      this.suggestions = await flexsearchSvc.match(
+      const suggestions = await flexsearchSvc.match(
         this.query,
         this.queryTerms,
         this.$site.themeConfig.searchMaxSuggestions || SEARCH_MAX_SUGGESTIONS,
       )
+
+      // augment suggestions with user-provided function
+      if (functions && functions.processSuggestions) {
+        this.suggestions = await functions.processSuggestions(suggestions, this.query, this.queryTerms)
+      } else {
+        this.suggestions = suggestions
+      }
     },
     getPageLocalePath(page) {
       for (const localePath in this.$site.locales || {}) {
@@ -153,9 +174,26 @@ export default {
       if (!this.showSuggestions) {
         return
       }
-      this.$router.push(this.suggestions[i].path + this.suggestions[i].slug)
-      this.query = ''
-      this.focusIndex = 0
+      if (functions && functions.onGoToSuggestion) {
+        functions.onGoToSuggestion(i, this.suggestions[i], this.query, this.queryTerms)
+      }
+      if (this.suggestions[i].external) {
+        window.open(this.suggestions[i].path + this.suggestions[i].slug, '_blank')
+      } else {
+        this.$router.push(this.suggestions[i].path + this.suggestions[i].slug)
+        this.query = ''
+        this.focusIndex = 0
+        this.focused = false
+
+        // reset query param
+        const params = this.urlParams()
+        if (params) {
+          params.delete('query')
+          const paramsString = params.toString()
+          const newState = window.location.pathname + (paramsString ? `?${paramsString}` : '')
+          history.pushState(null, '', newState)
+        }
+      }
     },
     focus(i) {
       this.focusIndex = i
@@ -163,6 +201,12 @@ export default {
     unfocus() {
       this.focusIndex = -1
     },
+    urlParams() {
+      if (!window.location.search) {
+        return null
+      }
+      return new URLSearchParams(window.location.search)
+    }
   },
 }
 </script>

@@ -32,6 +32,12 @@ module.exports = options => ({
   alias: {
     '@SearchBox': path.resolve(__dirname, 'components/SearchBox.vue'),
   },
+  clientDynamicModules() {
+    return {
+      name: 'functions.js',
+      content: options.functions || 'export default null',
+    }
+  }
 })
 
 function getCharsets(text) {
