@@ -21,12 +21,14 @@ module.exports = (options, ctx, globalCtx) => ({
 
       for (const h of $page.headers || []) {
         const titlePlaintext = $page._context.markdown.renderInline(h.title)
+        h.normalizedTitle = normalizeText(titlePlaintext)
         h.charIndex = plaintext.indexOf(titlePlaintext)
         if (h.charIndex === -1) h.charIndex = null
       }
       $page.headersStr = $page.headers ? $page.headers.map(h => h.title).join(' ') : null
       $page.content = plaintext
-      $page.contentLowercase = plaintext.toLowerCase()
+      $page.normalizedContent = normalizeText(plaintext)
+
       $page.charsets = getCharsets(plaintext)
 
       // Take title from sidebar if it's missing on the page itself
@@ -46,6 +48,13 @@ module.exports = (options, ctx, globalCtx) => ({
     }
   },
 })
+
+function normalizeText(text) {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+}
 
 function getCustomTitles(globalCtx) {
   try {

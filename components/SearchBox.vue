@@ -25,12 +25,18 @@
         @mouseenter="focus(i)"
       >
         <a :href="s.path + s.slug" @click.prevent>
-          <div v-if="s.parentPageTitle" class="parent-page-title" v-html="highlight(s.parentPageTitle)" />
+          <div v-if="s.parentPageTitle" class="parent-page-title" v-html="s.parentPageTitle" />
           <div class="suggestion-row">
             <div class="page-title">{{ s.title || s.path }}</div>
             <div class="suggestion-content">
-              <div v-if="s.headingStr" class="header">{{ s.headingStr }}</div>
-              <div v-if="s.contentStr">{{ s.contentStr }}</div>
+              <!-- prettier-ignore -->
+              <div v-if="s.headingStr" class="header">
+                {{ s.headingDisplay.prefix }}<span class="highlight">{{ s.headingDisplay.highlightedContent }}</span>{{ s.headingDisplay.suffix }}
+              </div>
+              <!-- prettier-ignore -->
+              <div v-if="s.contentStr">
+                {{ s.contentDisplay.prefix }}<span class="highlight">{{ s.contentDisplay.highlightedContent }}</span>{{ s.contentDisplay.suffix }}
+              </div>
             </div>
           </div>
         </a>
@@ -60,9 +66,8 @@ export default {
   computed: {
     queryTerms() {
       if (!this.query) return []
-      const result = this.query
-        .trim()
-        .toLowerCase()
+      const result = flexsearchSvc
+        .normalizeString(this.query)
         .split(/[^\p{L}\p{N}_]+/iu)
         .filter(t => t)
       return result
@@ -102,28 +107,25 @@ export default {
     document.removeEventListener('keydown', this.onHotkey)
   },
   methods: {
-    highlight(str) {
-      if (!this.queryTerms.length) return str
-      return str
-    },
     async getSuggestions() {
-      if (!this.query) return
-      if (!this.queryTerms.length) {
+      if (!this.query || !this.queryTerms.length) {
         this.suggestions = []
         return
       }
-      const suggestions = await flexsearchSvc.match(
+      let suggestions = await flexsearchSvc.match(
         this.query,
         this.queryTerms,
         this.$site.themeConfig.searchMaxSuggestions || SEARCH_MAX_SUGGESTIONS,
       )
-
-      // augment suggestions with user-provided function
       if (hooks.processSuggestions) {
-        this.suggestions = await hooks.processSuggestions(suggestions, this.query, this.queryTerms)
-      } else {
-        this.suggestions = suggestions
+        // augment suggestions with user-provided function
+        suggestions = await hooks.processSuggestions(suggestions, this.query, this.queryTerms)
       }
+      this.suggestions = suggestions.map(s => ({
+        ...s,
+        headingDisplay: highlight(s.headingStr, s.headingHighlight),
+        contentDisplay: highlight(s.contentStr, s.contentHighlight),
+      }))
     },
     getPageLocalePath(page) {
       for (const localePath in this.$site.locales || {}) {
@@ -210,6 +212,20 @@ export default {
     },
   },
 }
+
+function highlight(str, strHighlight) {
+  if (!str) return {}
+  if (!strHighlight) return { prefix: str }
+  const [start, length] = strHighlight
+  const end = start + length
+
+  const prefix = str.slice(0, start)
+  const highlightedContent = str.slice(start, end)
+  const suffix = str.slice(end)
+  return { prefix, highlightedContent, suffix }
+
+  // return `${prefix}<span class="highlight">${highlightedContent}</span>${suffix}`
+}
 </script>
 
 <style lang="stylus">
@@ -278,6 +294,8 @@ export default {
           padding 5px
           font-weight 600
         .suggestion-content
+          .highlight
+            text-decoration: underline
           border 1px solid $borderColor
           font-weight 400
           border-right none
