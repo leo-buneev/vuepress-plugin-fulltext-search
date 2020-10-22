@@ -13,7 +13,7 @@ const cjkRegex = /[\u3131-\u314e|\u314f-\u3163|\uac00-\ud7a3]|[\u4E00-\u9FCC\u34
 
 export default {
   buildIndex(allPages) {
-    const pages = allPages.filter((p) => !p.frontmatter || (p.frontmatter.search !== false))
+    const pages = allPages.filter(p => !p.frontmatter || p.frontmatter.search !== false)
     const indexSettings = {
       tokenize: 'forward',
       async: true,

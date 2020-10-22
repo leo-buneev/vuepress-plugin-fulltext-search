@@ -34,10 +34,10 @@ module.exports = options => ({
   },
   clientDynamicModules() {
     return {
-      name: 'functions.js',
-      content: options.functions || 'export default null',
+      name: 'hooks.js',
+      content: options.hooks || 'export default {}',
     }
-  }
+  },
 })
 
 function getCharsets(text) {
