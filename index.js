@@ -56,9 +56,9 @@ module.exports = (options, ctx, globalCtx) => ({
 
 function normalizeText(text) {
   return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
 }
 
 function getCustomTitles(globalCtx) {
