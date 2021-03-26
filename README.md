@@ -12,7 +12,7 @@ First, install plugin.
 ```bash
 npm i vuepress-plugin-fulltext-search -D
 # or
-yarn add -D vuepress-plugin-fulltext-search -D
+yarn add vuepress-plugin-fulltext-search -D
 ```
 
 Then, enable the plugin in your `docs/.vuepress/config.js`:
