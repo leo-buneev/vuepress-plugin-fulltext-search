@@ -47,6 +47,11 @@ module.exports = (options, ctx, globalCtx) => ({
       content: options.hooks || 'export default {}',
     }
   },
+  define() {
+    return {
+      OPTIONS: options,
+    }
+  },
 })
 
 function normalizeText(text) {
