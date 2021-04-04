@@ -88,8 +88,10 @@ export default {
       this.getSuggestions()
     },
   },
+  /* global OPTIONS */
   mounted() {
-    flexsearchSvc.buildIndex(this.$site.pages)
+    const options = OPTIONS || {};
+    flexsearchSvc.buildIndex(this.$site.pages, options)
     this.placeholder = this.$site.themeConfig.searchPlaceholder || ''
     document.addEventListener('keydown', this.onHotkey)
 
