@@ -1,5 +1,5 @@
 const { path } = require('@vuepress/shared-utils')
-const htmlToText = require('html-to-text')
+const { htmlToText } = require('html-to-text')
 const _ = require('lodash')
 
 let customTitles = null
@@ -10,7 +10,7 @@ module.exports = (options, ctx, globalCtx) => ({
       const { html } = $page._context.markdown.render($page._strippedContent || '')
       if (!customTitles) customTitles = getCustomTitles(globalCtx)
 
-      const plaintext = htmlToText.fromString(html, {
+      const plaintext = htmlToText(html, {
         wordwrap: null,
         hideLinkHrefIfSameAsText: true,
         ignoreImage: true,
