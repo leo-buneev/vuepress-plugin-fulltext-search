@@ -146,6 +146,5 @@ module.exports = {
 }
 ```
 
-[flexsearch-options][https://github.com/nextapps-de/flexsearch#initialize-index]
-
-[search-max-suggestions][https://vuepress.vuejs.org/theme/default-theme-config.html#built-in-search]
+[flexsearch-options]: https://github.com/nextapps-de/flexsearch#initialize-index
+[search-max-suggestions]: https://vuepress.vuejs.org/theme/default-theme-config.html#built-in-search
