@@ -90,7 +90,7 @@ export default {
   },
   /* global OPTIONS */
   mounted() {
-    const options = OPTIONS || {};
+    const options = OPTIONS || {}
     flexsearchSvc.buildIndex(this.$site.pages, options)
     this.placeholder = this.$site.themeConfig.searchPlaceholder || ''
     document.addEventListener('keydown', this.onHotkey)

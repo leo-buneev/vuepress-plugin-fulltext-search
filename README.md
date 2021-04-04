@@ -116,17 +116,15 @@ async function onGoToSuggestion(index: number, suggestion: Suggestion, queryStri
 
 ### Additional configuration
 
-You can set additional configuration options in the config file. For `tokenize`, `split`, and
-`encode`, see the [flexsearch documentation][flexsearch-options] for more details.
+You can set additional configuration options in the config file. For `tokenize`, `split`, and `encode`, see the
+[flexsearch documentation][flexsearch-options] for more details.
 
-* `tokenize`: The indexing mode (tokenizer). Choose one of the built-ins or pass a custom tokenizer
-  function.
-* `split`: The rule to split words when using non-custom tokenizer (built-ins e.g. "forward"). Use a
-  string/char or use a regular expression (default: `/\W+/`).
-* `encode`: The encoding type. Choose one of the built-ins or pass a custom encoding function.
+- `tokenize`: The indexing mode (tokenizer). Choose one of the built-ins or pass a custom tokenizer function.
+- `split`: The rule to split words when using non-custom tokenizer (built-ins e.g. "forward"). Use a string/char or use
+  a regular expression (default: `/\W+/`).
+- `encode`: The encoding type. Choose one of the built-ins or pass a custom encoding function.
 
-The built-in `searchMaxSuggestions` will be used if set in the
-[theme config][search-max-suggestions].
+The built-in `searchMaxSuggestions` will be used if set in the [theme config][search-max-suggestions].
 
 For example:
 
@@ -144,9 +142,10 @@ module.exports = {
   ],
   themeConfig: {
     searchMaxSuggestions: 10,
-  }
+  },
 }
 ```
 
-[flexsearch-options]: [https://github.com/nextapps-de/flexsearch#initialize-index]
-[search-max-suggestions]: https://vuepress.vuejs.org/theme/default-theme-config.html#built-in-search
+[flexsearch-options][https://github.com/nextapps-de/flexsearch#initialize-index]
+
+[search-max-suggestions][https://vuepress.vuejs.org/theme/default-theme-config.html#built-in-search]

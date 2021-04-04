@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 2.2.0 (2021-04-04)
+
+### Added
+
+- Ability to pass-through flexSearch configuration (@echojoshchen in #44)
+
+### Changed
+
+- Fixed #41 - HTML parsing by updating dependency on html-to-text (@echojoshchen in #42)
+- updated dependencies
+
 ## 2.1.0 (2020-10-22)
 
 ### Added

@@ -99,7 +99,7 @@ function getCustomTitles(globalCtx) {
     }
     return result
   } catch (e) {
-    console.log('[fulltext-search] Error while getting sidebar paths:', e)
+    console.error('[fulltext-search] Error while getting sidebar paths:', e)
     return {}
   }
 }
@@ -110,7 +110,7 @@ function normalizePath(rawPath) {
     const parsedPath = path.parse(rawPath)
     return path.join(parsedPath.dir, parsedPath.name)
   } catch (e) {
-    console.log(`[fulltext-search] Error while normalizing path ${rawPath}:`, e)
+    console.error(`[fulltext-search] Error while normalizing path ${rawPath}:`, e)
     return null
   }
 }
