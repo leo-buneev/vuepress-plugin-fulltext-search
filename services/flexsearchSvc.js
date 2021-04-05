@@ -17,7 +17,7 @@ export default {
     const indexSettings = {
       encode: options.encode || 'simple',
       tokenize: options.tokenize || 'forward',
-      split: options.split || /\W+/,
+      split: options.split ? new RegExp(options.split) : /\W+/,
       async: true,
       doc: {
         id: 'key',
