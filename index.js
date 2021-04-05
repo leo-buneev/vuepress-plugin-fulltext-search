@@ -49,7 +49,7 @@ module.exports = (options, ctx, globalCtx) => ({
   },
   define() {
     return {
-      OPTIONS: options,
+      FULLTEXT_SEARCH_OPTIONS: options,
     }
   },
 })

@@ -88,9 +88,9 @@ export default {
       this.getSuggestions()
     },
   },
-  /* global OPTIONS */
+  /* global FULLTEXT_SEARCH_OPTIONS */
   mounted() {
-    const options = OPTIONS || {}
+    const options = FULLTEXT_SEARCH_OPTIONS || {}
     flexsearchSvc.buildIndex(this.$site.pages, options)
     this.placeholder = this.$site.themeConfig.searchPlaceholder || ''
     document.addEventListener('keydown', this.onHotkey)
