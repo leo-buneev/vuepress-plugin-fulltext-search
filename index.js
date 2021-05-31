@@ -48,8 +48,11 @@ module.exports = (options, ctx, globalCtx) => ({
     }
   },
   define() {
+    if (options.split instanceof RegExp) {
+      options.split = options.split.source
+    }
     return {
-      OPTIONS: options,
+      FULLTEXT_SEARCH_OPTIONS: options,
     }
   },
 })
