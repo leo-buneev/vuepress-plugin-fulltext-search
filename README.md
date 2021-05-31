@@ -148,3 +148,26 @@ module.exports = {
 
 [flexsearch-options]: https://github.com/nextapps-de/flexsearch#initialize-index
 [search-max-suggestions]: https://vuepress.vuejs.org/theme/default-theme-config.html#built-in-search
+
+
+
+### Top Category Level
+
+You can define an option `topCategoryLevel` in order to define what is the top page title that will be displayed on search Box.
+Default is `0` meaning "top-most" category.
+If you define a level that don't exist for this page, it fails back to 0.  
+
+```js
+// /docs/.vuepress/config.js
+module.exports = {
+  plugins: [
+    [
+      'fulltext-search',
+      {
+        // provide the contents of a JavaScript file
+        topCategoryLevel: 1
+      },
+    ],
+  ],
+}
+```
