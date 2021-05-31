@@ -91,7 +91,7 @@ export default {
   /* global OPTIONS */
   mounted() {
     const options = OPTIONS || {}
-    flexsearchSvc.buildIndex(this.$site.pages, options)
+    flexsearchSvc.buildIndex(this.$site.pages, options, this.$localePath)
     this.placeholder = this.$site.themeConfig.searchPlaceholder || ''
     document.addEventListener('keydown', this.onHotkey)
 
