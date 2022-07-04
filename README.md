@@ -10,9 +10,9 @@ Many thanks to [Ahmad Mostafa](https://ahmadmostafa.com/2019/12/09/build-better-
 First, install plugin.
 
 ```bash
-npm i vuepress-plugin-fulltext-search -D
+npm i vuepress-plugin-fulltext-highlight-search -D
 # or
-yarn add vuepress-plugin-fulltext-search -D
+yarn add vuepress-plugin-fulltext-highlight-search -D
 ```
 
 Then, enable the plugin in your `docs/.vuepress/config.js`:

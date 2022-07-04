@@ -1,5 +1,5 @@
 {
-  "name": "vuepress-plugin-fulltext-hightlight-search",
+  "name": "vuepress-plugin-fulltext-highlight-search",
   "version": "1.0.0",
   "description": "Adds full-text search capabilities to your vuepress site with a help of flexsearch library.",
   "main": "index.js",
