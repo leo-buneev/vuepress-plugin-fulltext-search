@@ -1,4 +1,4 @@
-# vuepress-plugin-fulltext-search
+# vuepress-plugin-fulltext-highlight-search
 
 Add full-text search capabilities to your [VuePress](https://vuepress.vuejs.org/) website using the
 [Flexsearch](https://github.com/nextapps-de/flexsearch) library.
@@ -21,7 +21,7 @@ Then, enable the plugin in your `docs/.vuepress/config.js`:
 // docs/.vuepress/config.js
 module.exports = {
   // ...
-  plugins: ['fulltext-search'],
+  plugins: ['fulltext-highlight-search'],
 }
 ```
 
@@ -90,7 +90,7 @@ const { path } = require('@vuepress/shared-utils')
 module.exports = {
   plugins: [
     [
-      'fulltext-search',
+      'fulltext-highlight-search',
       {
         // provide the contents of a JavaScript file
         hooks: fs.readFileSync(path.resolve(__dirname, './searchHooks.js')),
@@ -132,7 +132,7 @@ For example:
 module.exports = {
   plugins: [
     [
-      'fulltext-search',
+      'fulltext-highlight-search',
       {
         tokenize: 'full',
         split: /\s+/,
