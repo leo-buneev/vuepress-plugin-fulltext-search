@@ -13,8 +13,8 @@
   "dependencies": {
     "flexsearch": "^0.6.32",
     "html-to-text": "^7.0.0",
-    "lodash": "^4.17.19",
-    "vuepress-plugin-fulltext-highlight-search": "^1.0.0"
+    "lodash": "^4.17.19"
+
   },
   "peerDependencies": {
     "vuepress": "^1.4.0"
