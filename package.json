@@ -1,6 +1,6 @@
 {
   "name": "vuepress-plugin-fulltext-highlight-search",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Adds full-highlight-text search capabilities to your vuepress site with a help of fulltext-search library.",
   "main": "index.js",
   "repository": "git@github.com:Wang9977/vuepress-plugin-fulltext-search.git",
